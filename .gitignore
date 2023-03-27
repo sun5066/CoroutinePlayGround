@@ -1,0 +1,26 @@
+/.idea/
+/build
+
+# Java class files
+*.class
+
+# generated files
+bin/
+gen/
+out/
+build/
+
+# Eclipse project files
+.classpath
+.project
+
+# Gradle cache
+.gradle
+
+# IDEA/Android Studio project files, because
+# the project can be imported from settings.gradle.kts.kts
+*.iml
+
+# User-specific configurations
+.idea/*
+/projectFilesBackup/.idea/workspace.xml
