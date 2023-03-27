@@ -3,13 +3,13 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
 
-class Presenter(
+class TestPresenter(
     testRepository: TestRepository = TestRepository(),
-    viewModelScope: CoroutineScope,
+    presenterScope: CoroutineScope,
 ) {
 
     val data: StateFlow<ResultState<TestData>> = testRepository.getData().resultFlow.stateIn(
-        scope = viewModelScope,
+        scope = presenterScope,
         started = SharingStarted.WhileSubscribed(5_000),
         initialValue = ResultState.Loading
     )

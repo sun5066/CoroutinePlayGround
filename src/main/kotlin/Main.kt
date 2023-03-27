@@ -5,9 +5,9 @@ import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.runBlocking
 
 fun main(args: Array<String>): Unit = runBlocking {
-    val presenter = Presenter(viewModelScope = this)
+    val testPresenter = TestPresenter(presenterScope = this)
 
-    presenter.data.collectResultState(
+    testPresenter.data.collectResultState(
         onLoading = { println("로딩중..") },
         onSuccess = { println("성공! $it") },
         onFail = { it?.printStackTrace() }
