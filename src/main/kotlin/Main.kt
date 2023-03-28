@@ -2,16 +2,27 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onStart
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
 fun main(args: Array<String>): Unit = runBlocking {
     val testPresenter = TestPresenter(presenterScope = this)
 
-    testPresenter.data.collectResultState(
-        onLoading = { println("로딩중..") },
-        onSuccess = { println("성공! $it") },
-        onFail = { it?.printStackTrace() }
-    )
+    launch {
+        testPresenter.data.collectResultState(
+            onLoading = { println("로딩중..") },
+            onSuccess = { println("성공! $it") },
+            onFail = { println("실패..!") }
+        )
+    }
+
+    launch {
+        testPresenter.zipData.collectResultState(
+            onLoading = { println("로딩중..") },
+            onSuccess = { println("성공! $it") },
+            onFail = { println("실패..!") }
+        )
+    }
 }
 
 suspend fun <T> Flow<ResultState<T>>.collectResultState(
@@ -37,7 +48,6 @@ sealed interface ResultState<out T> {
 }
 
 val <T> Flow<T>.resultFlow: Flow<ResultState<T>>
-    get() =
-        this.map<T, ResultState<T>> { ResultState.Success(it) }
-            .onStart { emit(ResultState.Loading) }
-            .catch { emit(ResultState.Fail(it)) }
+    get() = map<T, ResultState<T>> { ResultState.Success(it) }
+        .onStart { emit(ResultState.Loading) }
+        .catch { emit(ResultState.Fail(it)) }
