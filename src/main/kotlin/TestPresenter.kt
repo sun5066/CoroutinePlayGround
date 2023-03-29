@@ -12,9 +12,7 @@ class TestPresenter(
         initialValue = ResultState.Loading
     )
 
-    private var tryCnt = 0
-
-    private val retryData = testRepository.getRetryErrorData().retry { tryCnt++ < 3 }
+    private val retryData = testRepository.getRetryErrorData().retry(3) { true }
 
     val zipData: StateFlow<ResultState<TestZipData>> =
         testRepository.getSuccessData().zip(retryData) { testData1, testData2 ->
